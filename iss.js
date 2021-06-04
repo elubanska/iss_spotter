@@ -21,5 +21,25 @@
       callback(null, ip);
     });
   };
+
+
+const fetchCoordsByIP = function(ip, callback) {
+    let apiText = 'https://freegeoip.app/json/' + ip;
+    // console.log(apiText);
+    request(apiText, (error, response, body) => {
+        if (error) return callback(error, null);
+    
+        if (response.statusCode !== 200) {
+          callback(Error(`Status Code ${response.statusCode} when fetching IP: ${body}`), null);
+          return;
+        }
+
+        const data = {};
+        data.latitude = JSON.parse(body).latitude;
+        data.longitude = JSON.parse(body).longitude;
+        callback(null, data);
+      });
+  };
   
   module.exports = { fetchMyIP };
+  module.exports = { fetchCoordsByIP };
